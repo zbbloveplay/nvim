@@ -7,7 +7,6 @@ if empty(glob('~/.config/nvim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-let mapleader=" "
 syntax on
 
 " ==
@@ -85,9 +84,8 @@ map <down> :res +5<CR>
 map <left> :vertical resize+5<CR>
 map <right> :vertical resize-5<CR>
 
-" Press <SPACE> + q to close the window below the current window
+" Press <LEADER> + q to close the window below the current window
 noremap <LEADER>q <C-w>j:q<CR>
-
 
 " ===
 " === Tab management
@@ -116,6 +114,12 @@ cmap w!! w !sudo tee > /dev/null %
 " find and replace
 noremap \s :%s//g<left><left>
 
+" easy system clipboard copy/paste
+noremap <LEADER>y "*y
+noremap <LEADER>Y "*Y
+noremap <LEADER>p "*p
+noremap <LEADER>P "*P
+
 " Compile function
 map r :call ComplieRunGcc()<CR>
 func! ComplieRunGcc()
@@ -133,50 +137,13 @@ func! ComplieRunGcc()
   endif
 endfunc
 
-
 " My snippits
 source ~/.config/nvim/snippits.vim
-
 
 call plug#begin('~/.config/nvim/plugged')
 
 " Pretty Dress
 Plug 'vim-airline/vim-airline'
 
-" Markdown
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install_sync() }, 'for' :['markdown','vim-plug'] }
-
-" xkbswitch
-" Plug 'lyokha/vim-xkbswitch'
-
 call plug#end()
-
-" xkbswitch
-" let g:XkbSwitchEnabled = 1
-
-" ===
-" === MarkdownPreview
-" ===
-let g:mkdp_auto_start = 0
-let g:mkdp_auto_close = 1
-let g:mkdp_refresh_slow = 0
-let g:mkdp_command_for_global = 0
-let g:mkdp_open_to_the_world = 0
-let g:mkdp_open_ip = ''
-let g:mkdp_echo_preview_url = 0
-let g:mkdp_browserfunc = ''
-let g:mkdp_preview_options = {
-			\ 'mkit': {},
-			\ 'katex': {},
-			\ 'uml': {},
-			\ 'maid': {},
-			\ 'disable_sync_scroll': 0,
-			\ 'sync_scroll_type': 'middle',
-			\ 'hide_yaml_meta': 1
-			\ }
-let g:mkdp_markdown_css = ''
-let g:mkdp_highlight_css = ''
-let g:mkdp_port = ''
-let g:mkdp_page_title = '「${name}」'
-
 
