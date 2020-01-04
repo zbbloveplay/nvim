@@ -145,5 +145,9 @@ call plug#begin('~/.config/nvim/plugged')
 " Pretty Dress
 Plug 'vim-airline/vim-airline'
 
+" Auto Complete
+" Can ues `:checkhealth` command to see if coc services is running
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
 call plug#end()
 
