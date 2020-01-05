@@ -1,36 +1,72 @@
-" ===
-" === Auto load for first time uses
-" ===
+" Environment requirements:
+" - nvim
+" - python3
+" - vim plug
+" - node
+
+" Auto load for first time uses
 if empty(glob('~/.config/nvim/autoload/plug.vim'))
   silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-syntax on
+call plug#begin('~/.config/nvim/plugged')
 
-" ==
-" == Editor behavior
-" ==
-set number
-"set relativenumber
-set cursorline
-set expandtab
+  " Pretty Dress
+  Plug 'vim-airline/vim-airline'
+  
+  " Auto Complete
+  " Can ues `:checkhealth` command to see if coc services is running
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+call plug#end()
+
+set shell=zsh
+
+" Default options
+set autoread " Automatically read the file when it's changed outside VIM
+set cursorline " Enable current line indicator
+set encoding=UTF-8 " Default file encoding
+set expandtab " To Insert a real tab on insert mode
+set history=10000 " The lines of history to remember
+set lazyredraw " Don't redraw while performing a macro
+set noautochdir " Don't change the current working directory whenever open a file, switch buffer, delete a buffer or open/close a window.
+set number " Show line numbers
+set relativenumber
+set ruler " Always show current position
+set showcmd " 
+set showmatch " Show matching braces
+set splitbelow splitright
+set ttimeoutlen=50
+set undofile " Enable undo persistence across sessions
 set wrap
-set showcmd
+
+" Searching
+set ignorecase
+set smartcase
+set hlsearch
+set incsearch
+
+" Indent
 set tabstop=2
 set shiftwidth=2
 set softtabstop=2
 
-set hlsearch
-exec "nohlsearch"
-set incsearch
-set ignorecase
-set smartcase
+" Syntax
+if !exists('g:syntax_on')
+	syntax enable
+endif
 
-" ==
-" == Basic Mappings
-" ==
+" Visual configuration
+colorscheme nord
+set termguicolors
+
+set wildignore+=.git,.DS_Store
+
+exec "nohlsearch"
+
+" Basic Mappings
 "| key   | mean         | 
 "|-------|--------------| 
 "| nore  | no recursion |
@@ -55,15 +91,11 @@ noremap = nzz
 noremap - Nzz
 map <LEADER><CR> :nohlsearch<CR>
 
-" ===
-" === Cursor Movement
-" ===
+" Cursor Movement
 noremap K 5k
 noremap J 5j
 
-" ===
-" === Windows management
-" ===
+" Windows management
 map <LEADER>j <C-w>j
 map <LEADER>k <C-w>k
 map <LEADER>l <C-w>l
@@ -87,9 +119,7 @@ map <right> :vertical resize-5<CR>
 " Press <LEADER> + q to close the window below the current window
 noremap <LEADER>q <C-w>j:q<CR>
 
-" ===
-" === Tab management
-" ===
+" Tab management
 " Create a new tab with tu
 noremap tu :tabe<CR>
 " Move around tabs with tn and ti
@@ -99,9 +129,7 @@ noremap ti :+tabnext<CR>
 noremap tmn :-tabmove<CR>
 noremap tmi :+tabmove<CR>
 
-" ===
-" === Other useful stuff
-" ===
+" Other useful stuff
 " \p to show the current buffer file path
 nnoremap \p 1<C-G>
 
@@ -139,15 +167,3 @@ endfunc
 
 " My snippits
 source ~/.config/nvim/snippits.vim
-
-call plug#begin('~/.config/nvim/plugged')
-
-" Pretty Dress
-Plug 'vim-airline/vim-airline'
-
-" Auto Complete
-" Can ues `:checkhealth` command to see if coc services is running
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
-call plug#end()
-
