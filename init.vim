@@ -28,6 +28,12 @@ call plug#begin('~/.config/nvim/plugged')
   Plug '/usr/local/opt/fzf'
   Plug 'junegunn/fzf.vim'
 
+  " Track the engine.
+  Plug 'SirVer/ultisnips'
+
+  " Snippets are separated from the engine. Add this if you want them:
+  Plug 'honza/vim-snippets'
+
 call plug#end()
 
 set shell=zsh
@@ -218,4 +224,15 @@ function! s:defx_toggle_tree() abort
 endfunction
 
 " fzf
+noremap <LEADER>f :FZF<CR>
+noremap <LEADER>b :Buffers<CR>
+"noremap <LEADER>h :History<CR>
 
+" ultisnips
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
