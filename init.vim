@@ -24,6 +24,10 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'kristijanhusak/defx-icons'
 
+  " fzf
+  Plug '/usr/local/opt/fzf'
+  Plug 'junegunn/fzf.vim'
+
 call plug#end()
 
 set shell=zsh
@@ -168,20 +172,8 @@ endfunc
 " My snippits
 source ~/.config/nvim/snippits.vim
 
-" 使用 ;e 切换显示文件浏览，使用 ;a 查找到当前文件位置
-let g:maplocalleader=';'
-nnoremap <silent> <LocalLeader>e
-\ :<C-u>Defx -resume -toggle -buffer-name=tab`tabpagenr()`<CR>
-nnoremap <silent> <LocalLeader>a
-\ :<C-u>Defx -resume -buffer-name=tab`tabpagenr()` -search=`expand('%:p')`<CR>
 
-function! s:defx_mappings() abort
-	" Defx window keyboard mappings
-	setlocal signcolumn=no
-	" 使用回车打开文件
-	nnoremap <silent><buffer><expr> <CR> defx#do_action('multi', ['drop'])
-endfunction
-
+" defx custom option 
 call defx#custom#option('_', {
 	\ 'columns': 'indent:git:icons:filename',
 	\ 'winwidth': 25,
@@ -196,3 +188,34 @@ call defx#custom#option('_', {
 	\ })
 
 autocmd FileType defx call s:defx_mappings()
+
+" 使用 ;e 切换显示文件浏览，使用 ;a 查找到当前文件位置
+let g:maplocalleader=';'
+nnoremap <silent> <LocalLeader>e
+\ :<C-u>Defx -resume -toggle -buffer-name=tab`tabpagenr()`<CR>
+nnoremap <silent> <LocalLeader>a
+\ :<C-u>Defx -resume -buffer-name=tab`tabpagenr()` -search=`expand('%:p')`<CR>
+
+function! s:defx_mappings() abort
+	" Defx window keyboard mappings
+	setlocal signcolumn=no
+	" 使用回车打开文件
+	nnoremap <silent><buffer><expr> <CR> defx#do_action('multi', ['drop'])
+  " 打开或关闭文件夹
+  nnoremap <silent><buffer><expr> l     <SID>defx_toggle_tree()
+  " 显示隐藏文件
+  nnoremap <silent><buffer><expr> .     defx#do_action('toggle_ignored_files')     
+  " 
+  nnoremap <silent><buffer><expr> <C-r>  defx#do_action('redraw')
+endfunction
+
+function! s:defx_toggle_tree() abort
+    " Open current file, or toggle directory expand/collapse
+    if defx#is_directory()
+        return defx#do_action('open_or_close_tree')
+    endif
+    return defx#do_action('multi', ['drop'])
+endfunction
+
+" fzf
+
