@@ -15,11 +15,8 @@ call plug#begin('~/.config/nvim/plugged')
 
   " Pretty Dress
   Plug 'vim-airline/vim-airline'
+  Plug 'vim-airline/vim-airline-themes'
   
-  " Auto Complete
-  " Can ues `:checkhealth` command to see if coc services is running
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
   " Defx File Explorer
   Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'kristijanhusak/defx-icons'
@@ -30,11 +27,20 @@ call plug#begin('~/.config/nvim/plugged')
   Plug '~/.fzf'
   Plug 'junegunn/fzf.vim'
 
-  " Track the engine.
-  Plug 'SirVer/ultisnips'
+  " Auto Complete
+  " Can ues `:checkhealth` command to see if coc services is running
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
+  " Ultisnips
+  Plug 'SirVer/ultisnips'
   " Snippets are separated from the engine. Add this if you want them:
   Plug 'honza/vim-snippets'
+
+  " Golang
+  Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+
+  " Vim Applications
+  Plug 'itchyny/calendar.vim'
 
 call plug#end()
 
@@ -49,14 +55,16 @@ set history=10000 " The lines of history to remember
 set lazyredraw " Don't redraw while performing a macro
 set noautochdir " Don't change the current working directory whenever open a file, switch buffer, delete a buffer or open/close a window.
 set number " Show line numbers
-set relativenumber
-set ruler " Always show current position
-set showcmd " 
+"set relativenumber
+"set ruler " Always show current position
+set showcmd 
 set showmatch " Show matching braces
 set splitbelow splitright
 set ttimeoutlen=50
 set undofile " Enable undo persistence across sessions
 set wrap
+"设置为双字宽显示，否则无法完整显示如:☆
+"set ambiwidth=double
 
 " Searching
 set ignorecase
@@ -92,7 +100,6 @@ exec "nohlsearch"
 " Know more: https://neovim.io/doc/user/map.html
 " 
 let mapleader=" "
-"map ; :
 
 " Save & quit
 map S :w<CR>
@@ -185,17 +192,18 @@ endfunc
 source ~/.config/nvim/markdown.vim
 source ~/.config/nvim/defx.vim
 
-" COC
-let g:coc_global_extensions = [
-  \ 'coc-snippets',
-  \ 'coc-pairs',
-  \ 'coc-tsserver',
-  \ 'coc-eslint',
-  \ 'coc-prettier',
-  \ 'coc-json',
-  \ ]
+" airline
+let g:airline_theme="papercolor" 
+let g:airline#extensions#tabline#enabled = 1
+"let g:airline#extensions#tabline#buffer_nr_show = 1
+" 关闭状态显示空白符号计数
+let g:airline#extensions#whitespace#enabled = 0
+let g:airline#extensions#whitespace#symbol = '!'
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
 
-" Defx ============================================================{{{
+
+" Defx 
 call defx#custom#option('_', {
 	\ 'columns': 'indent:git:icons:filename',
 	\ 'winwidth': 25,
@@ -239,18 +247,84 @@ hi def link Defx_git_Renamed Title
 hi def link Defx_git_Unmerged Label
 hi def link Defx_git_Untracked Tag
 hi def link Defx_git_Ignored Comment
-" }}}
 
 " fzf
 noremap <LEADER>f :FZF<CR>
 noremap <LEADER>b :Buffers<CR>
 "noremap <LEADER>h :History<CR>
 
-" ultisnips
-" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+" 自动补全和代码片段
+" 目前使用了两个系统完成这个功能，其中COC系统庞大，Ultisnips比较灵活
+" Ultisnips
+let g:tex_flavor = "latex"
+inoremap <c-n> <nop>
+let g:UltiSnipsExpandTrigger="<c-j>"
+"let g:UltiSnipsListSnippets="<c-tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+let g:UltiSnipsSnippetDirectories = [$HOME.'/.config/nvim/Ultisnips/', 'UltiSnips']
+silent! au BufEnter,BufRead,BufNewFile * silent! unmap <c-r>
 
-" If you want :UltiSnipsEdit to split your window.
-let g:UltiSnipsEditSplit="vertical"
+" COC
+" fix the most annoying bug that coc has
+silent! au BufEnter,BufRead,BufNewFile * silent! unmap if
+let g:coc_global_extensions = ['coc-python', 'coc-vimlsp', 'coc-html', 'coc-json', 'coc-css', 'coc-tsserver', 'coc-yank', 'coc-lists', 'coc-gitignore', 'coc-vimlsp', 'coc-tailwindcss', 'coc-stylelint', 'coc-tslint', 'coc-lists', 'coc-git', 'coc-explorer', 'coc-pyright', 'coc-sourcekit', 'coc-translator']
+"set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+" use <tab> for trigger completion and navigate to the next complete item
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <Tab>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<Tab>" :
+      \ coc#refresh()
+" Use <Tab> and <S-Tab> to navigate the completion list
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"<Paste>
+" Use <cr> to confirm completion
+inoremap <expr> \a pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" Useful commands
+nnoremap <silent> gl :<C-u>CocList -A --normal yank<cr>
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap <leader>rn <Plug>(coc-rename)
+nmap tt :CocCommand explorer<CR>
+" coc-todolist
+noremap ta :CocCommand todolist.create<CR>
+noremap td :CocCommand todolist.upload<CR>
+noremap tD :CocCommand todolist.download<CR>
+noremap tc :CocCommand todolist.clearNotice<CR>
+noremap tl :CocList --normal todolist<CR>
+" coc-translator
+nmap ts <Plug>(coc-translator-p)
+" coc-markmap
+command! Markmap CocCommand markmap.create
+
+" vim-calendar
+"noremap \c :Calendar -position=here<CR>
+noremap \\ :Calendar -view=clock -position=here<CR>
+let g:calendar_google_calendar = 1
+let g:calendar_google_task = 1
+augroup calendar-mappings
+	autocmd!
+	" diamond cursor
+	autocmd FileType calendar nmap <buffer> u <Plug>(calendar_up)
+	autocmd FileType calendar nmap <buffer> n <Plug>(calendar_left)
+	autocmd FileType calendar nmap <buffer> e <Plug>(calendar_down)
+	autocmd FileType calendar nmap <buffer> i <Plug>(calendar_right)
+	autocmd FileType calendar nmap <buffer> <c-u> <Plug>(calendar_move_up)
+	autocmd FileType calendar nmap <buffer> <c-n> <Plug>(calendar_move_left)
+	autocmd FileType calendar nmap <buffer> <c-e> <Plug>(calendar_move_down)
+	autocmd FileType calendar nmap <buffer> <c-i> <Plug>(calendar_move_right)
+	autocmd FileType calendar nmap <buffer> k <Plug>(calendar_start_insert)
+	autocmd FileType calendar nmap <buffer> K <Plug>(calendar_start_insert_head)
+	" unmap <C-n>, <C-p> for other plugins
+	autocmd FileType calendar nunmap <buffer> <C-n>
+	autocmd FileType calendar nunmap <buffer> <C-p>
+augroup END
