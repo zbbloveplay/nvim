@@ -23,18 +23,18 @@ inoremap <expr> <space><cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 " Useful commands
 " show copy history
 nnoremap <silent> gl :<C-u>CocList -A --normal yank<cr>
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-nmap <leader>rn <Plug>(coc-rename)
-"nmap tt :CocCommand explorer<CR>
+nnoremap <silent> gd <Plug>(coc-definition)
+nnoremap <silent> gy <Plug>(coc-type-definition)
+nnoremap <silent> gi <Plug>(coc-implementation)
+nnoremap <silent> gr <Plug>(coc-references)
+"nnoremap <leader>rn <Plug>(coc-rename)
+nmap tt :CocCommand explorer --toggle --sources=buffer+,file+ --file-columns=selection:clip:indent:icon:filename;fullpath;size;modified;readonly <CR><CR>
 " coc-todolist
-"noremap ta :CocCommand todolist.create<CR>
-"noremap td :CocCommand todolist.upload<CR>
-"noremap tD :CocCommand todolist.download<CR>
-"noremap tc :CocCommand todolist.clearNotice<CR>
-"noremap tl :CocList --normal todolist<CR>
+noremap da :CocCommand todolist.create<CR>
+noremap td :CocCommand todolist.upload<CR>
+noremap tD :CocCommand todolist.download<CR>
+noremap tc :CocCommand todolist.clearNotice<CR>
+noremap cl :CocList --normal todolist<CR>
 " coc-translator
 nmap ts <Plug>(coc-translator-p)
 nmap tl :CocList translation<CR>

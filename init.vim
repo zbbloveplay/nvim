@@ -22,18 +22,18 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'kristijanhusak/defx-git'
 
   " fzf
-  Plug '/usr/local/opt/fzf'
-  Plug '~/.fzf'
-  Plug 'junegunn/fzf.vim'
+  "Plug '/usr/local/opt/fzf'
+  "Plug '~/.fzf'
+  "Plug 'junegunn/fzf.vim'
 
   " Auto Complete
   " Can ues `:checkhealth` command to see if coc services is running
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
   " Ultisnips
-  Plug 'SirVer/ultisnips'
+  "Plug 'SirVer/ultisnips'
   " Snippets are separated from the engine. Add this if you want them:
-  Plug 'honza/vim-snippets'
+  "Plug 'honza/vim-snippets'
 
   " Golang
   Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
@@ -202,6 +202,7 @@ endfunc
 source ~/.config/nvim/config/markdown.vim
 source ~/.config/nvim/config/defx.vim
 source ~/.config/nvim/config/coc.vim
-source ~/.config/nvim/config/ultisnips.vim
-source ~/.config/nvim/config/fzf.vim
+"source ~/.config/nvim/config/ultisnips.vim
+"source ~/.config/nvim/config/fzf.vim
 source ~/.config/nvim/config/airline.vim
+source ~/.config/nvim/config/go.vim
