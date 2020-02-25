@@ -167,8 +167,6 @@
   "javascript.suggest.names": true,
   "javascript.suggestionActions.enabled": true,
   "json.format.enable": true,
-  "translator.toLang": "zh",
-  "translator.engines":["bing", "ciba"],
   "languageserver": {
     "lua": {
       "command": "lua-lsp",

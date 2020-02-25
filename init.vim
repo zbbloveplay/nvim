@@ -1,5 +1,5 @@
 " Environment requirements:
-" - nvim > 4(has float)
+" - nvim > 4(float window) 
 " - python3
 " - node
 
@@ -20,6 +20,9 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'kristijanhusak/defx-icons'
   Plug 'kristijanhusak/defx-git'
+
+  " translator
+  Plug 'voldikss/vim-translator'
 
   " fzf
   "Plug '/usr/local/opt/fzf'
@@ -97,12 +100,14 @@ map Q :q<CR>
 " Quick Cursor Movement
 noremap K 5k
 noremap J 5j
+noremap L 5l
+noremap H 5h
 
 " Windows management
-nnoremap <SPACE>j <C-w>j
-nnoremap <SPACE>k <C-w>k
-nnoremap <SPACE>l <C-w>l
-nnoremap <SPACE>h <C-w>h
+"nnoremap <space>j <C-w>j
+"nnoremap <space>k <C-w>k
+"nnoremap <space>l <C-w>l
+"nnoremap <space>h <C-w>h
 
 " Disabling the default 's' key
 "map s <nop>
@@ -121,13 +126,13 @@ nnoremap <right> :vertical resize-5<CR>
 
 " Tab management
 " Create a new tab with tu
-noremap tu :tabe<CR>
-" Move around tabs with tn and ti
-noremap tn :-tabnext<CR>
-noremap ti :+tabnext<CR>
-" Move the tabs with tmn and tmi
-noremap tmn :-tabmove<CR>
-noremap tmi :+tabmove<CR>
+"noremap tu :tabe<CR>
+"" Move around tabs with tn and ti
+"noremap tn :-tabnext<CR>
+"noremap ti :+tabnext<CR>
+"" Move the tabs with tmn and tmi
+"noremap tmn :-tabmove<CR>
+"noremap tmi :+tabmove<CR>
 
 " Other useful stuff
 " \p to show the current buffer file path
@@ -153,16 +158,16 @@ endfunc
 noremap \n :call RelativeNumberToggle()<cr>
 
 " Press <SPACE> + q to close the window below the current window
-noremap <SPACE>q <C-w>j:q<CR>
+"nnoremap <SPACE>q <C-w>j:q<CR>
 
 " Allow saving of files as sudo when I forgot to start vim using sudo.
-cmap w!! w !sudo tee > /dev/null %
+"cmap w!! w !sudo tee > /dev/null %
 
 " easy system clipboard copy/paste
-noremap <SPACE>y "*y
-noremap <SPACE>Y "*Y
-noremap <SPACE>p "*p
-noremap <SPACE>P "*P
+"nnoremap <SPACE>y "*y
+"nnoremap <SPACE>Y "*Y
+"nnoremap <SPACE>p "*p
+"nnoremap <SPACE>P "*P
 
 if has("autocmd")  " go back to where you exited
   autocmd BufReadPost *
@@ -172,7 +177,7 @@ if has("autocmd")  " go back to where you exited
 endif
 
 " Compile function
-map r :call ComplieRunGcc()<CR>
+nmap \r :call ComplieRunGcc()<CR>
 func! ComplieRunGcc()
   exec "w"
   if &filetype == 'vim'
@@ -206,3 +211,4 @@ source ~/.config/nvim/config/coc.vim
 "source ~/.config/nvim/config/fzf.vim
 source ~/.config/nvim/config/airline.vim
 source ~/.config/nvim/config/go.vim
+source ~/.config/nvim/config/translator.vim
