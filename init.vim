@@ -24,6 +24,10 @@ call plug#begin('~/.config/nvim/plugged')
   " translator
   Plug 'voldikss/vim-translator'
 
+  " vimwiki
+  Plug 'vimwiki/vimwiki'
+  Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
+
   " fzf
   "Plug '/usr/local/opt/fzf'
   "Plug '~/.fzf'
@@ -76,6 +80,9 @@ set softtabstop=2
 if !exists('g:syntax_on')
 	syntax enable
 endif
+set nocompatible
+filetype plugin on
+syntax on
 set wildignore+=.git,.DS_Store
 
 exec "nohlsearch"
@@ -203,6 +210,9 @@ func! ComplieRunGcc()
   endif
 endfunc
 
+" vimwiki
+let g:vimwiki_list = [{'path': '~/vimwiki/',
+      \ 'syntax': 'markdown', 'ext': '.md'}]
 
 source ~/.config/nvim/config/markdown.vim
 source ~/.config/nvim/config/defx.vim
